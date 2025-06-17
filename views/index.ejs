@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Đặt vé xe</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Hệ thống đặt vé xe</h1>
+      <nav class="nav-menu">
+        <% if (user) { %>
+          <% if (user.role === 'admin') { %>
+            <a href="/admin/buses">Quản lý chuyến xe</a>
+            <a href="/admin/bookings">Quản lý đặt vé</a>
+          <% } else { %>
+            <a href="/my-bookings">Đặt vé của tôi</a>
+          <% } %>
+          <a href="/logout">Đăng xuất</a>
+        <% } else { %>
+          <a href="/login">Đăng nhập</a>
+          <a href="/register">Đăng ký</a>
+        <% } %>
+      </nav>
+    </header>
+
+    <div class="search-section">
+      <form action="/" method="GET" class="search-form">
+        <div class="form-group">
+          <label for="from">Điểm đi:</label>
+          <input type="text" id="from" name="from" value="<%= query?.from || '' %>">
+        </div>
+        <div class="form-group">
+          <label for="to">Điểm đến:</label>
+          <input type="text" id="to" name="to" value="<%= query?.to || '' %>">
+        </div>
+        <div class="form-group">
+          <label for="date">Ngày đi:</label>
+          <input type="date" id="date" name="date" value="<%= query?.date || '' %>">
+        </div>
+        <button type="submit">Tìm kiếm</button>
+      </form>
+    </div>
+
+    <div class="buses-list">
+      <h2>Danh sách chuyến xe</h2>
+      <% if (buses.length === 0) { %>
+        <p>Không tìm thấy chuyến xe nào.</p>
+      <% } else { %>
+        <% buses.forEach(bus => { %>
+          <div class="bus-item">
+            <div class="bus-info">
+              <h3><%= bus.company %></h3>
+              <p>Tuyến: <%= bus.route.from %> - <%= bus.route.to %></p>
+              <p>Thời gian khởi hành: <%= new Date(bus.departureTime).toLocaleString() %></p>
+              <p>Giá vé: <%= bus.price.toLocaleString() %> VNĐ</p>
+              <p>Số ghế còn trống: <%= bus.availableSeats %>/<%= bus.seats %></p>
+            </div>
+            <div class="bus-actions">
+              <% if (user && user.role !== 'admin') { %>
+                <% if (bus.availableSeats > 0) { %>
+                  <a href="/book/<%= bus._id %>" class="btn-book">Đặt vé</a>
+                <% } else { %>
+                  <button disabled class="btn-full">Hết vé</button>
+                <% } %>
+              <% } %>
+            </div>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

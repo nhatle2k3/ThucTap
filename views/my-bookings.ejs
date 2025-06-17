@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Đặt vé của tôi</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Đặt vé của tôi</h1>
+    <% if (bookings.length === 0) { %>
+      <p>Bạn chưa có đặt vé nào.</p>
+    <% } else { %>
+      <div class="bookings-list">
+        <% bookings.forEach(booking => { %>
+          <div class="booking-item">
+            <h3>Chuyến xe: <%= booking.bus.company %></h3>
+            <p>Tuyến: <%= booking.bus.route.from %> - <%= booking.bus.route.to %></p>
+            <p>Thời gian khởi hành: <%= new Date(booking.bus.departureTime).toLocaleString() %></p>
+            <p>Số ghế: <%= booking.seatNumber %></p>
+            <p>Số điện thoại: <%= booking.phone %></p>
+            <p>Trạng thái: 
+              <span class="status-<%= booking.status %>">
+                <%= booking.status === 'pending' ? 'Chờ xác nhận' : 
+                    booking.status === 'confirmed' ? 'Đã xác nhận' : 'Đã hủy' %>
+              </span>
+            </p>
+            <p>Ngày đặt: <%= new Date(booking.createdAt).toLocaleString() %></p>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+    <a href="/" class="back-link">← Quay lại trang chủ</a>
+  </div>
+</body>
+</html> 

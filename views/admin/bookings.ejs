@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quản lý đặt vé</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Quản lý đặt vé</h1>
+      <nav class="nav-menu">
+        <a href="/admin/buses">Quản lý chuyến xe</a>
+        <a href="/">Trang chủ</a>
+        <a href="/logout">Đăng xuất</a>
+      </nav>
+    </header>
+
+    <div class="bookings-list">
+      <h2>Danh sách đặt vé</h2>
+      <% if (bookings.length === 0) { %>
+        <p>Chưa có đặt vé nào.</p>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr>
+              <th>Mã đặt vé</th>
+              <th>Khách hàng</th>
+              <th>Chuyến xe</th>
+              <th>Số ghế</th>
+              <th>Số điện thoại</th>
+              <th>Trạng thái</th>
+              <th>Ngày đặt</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% bookings.forEach(booking => { %>
+              <tr>
+                <td><%= booking._id %></td>
+                <td><%= booking.user.fullName %></td>
+                <td>
+                  <%= booking.bus.company %><br>
+                  <%= booking.bus.route.from %> - <%= booking.bus.route.to %><br>
+                  <%= new Date(booking.bus.departureTime).toLocaleString() %>
+                </td>
+                <td><%= booking.seatNumber %></td>
+                <td><%= booking.phone %></td>
+                <td>
+                  <span class="status-<%= booking.status %>">
+                    <%= booking.status === 'pending' ? 'Chờ xác nhận' : 
+                        booking.status === 'confirmed' ? 'Đã xác nhận' : 'Đã hủy' %>
+                  </span>
+                </td>
+                <td><%= new Date(booking.createdAt).toLocaleString() %></td>
+                <td>
+                  <% if (booking.status === 'pending') { %>
+                    <form action="/admin/bookings/<%= booking._id %>/confirm" method="POST" style="display: inline;">
+                      <button type="submit" class="btn-confirm">Xác nhận</button>
+                    </form>
+                    <form action="/admin/bookings/<%= booking._id %>/cancel" method="POST" style="display: inline;">
+                      <button type="submit" class="btn-cancel">Hủy</button>
+                    </form>
+                  <% } %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html> 

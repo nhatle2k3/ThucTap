@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Đặt vé</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Đặt vé xe</h1>
+    <div class="bus-details">
+      <h2>Thông tin chuyến xe</h2>
+      <p>Nhà xe: <%= bus.company %></p>
+      <p>Tuyến: <%= bus.route.from %> - <%= bus.route.to %></p>
+      <p>Thời gian khởi hành: <%= new Date(bus.departureTime).toLocaleString() %></p>
+      <p>Giá vé: <%= bus.price.toLocaleString() %> VNĐ</p>
+      <p>Số ghế còn trống: <%= bus.availableSeats %></p>
+    </div>
+
+    <form action="/book/<%= bus._id %>" method="POST">
+      <div class="form-group">
+        <label for="seatNumber">Chọn số ghế:</label>
+        <select name="seatNumber" id="seatNumber" required>
+          <% for(let i = 1; i <= bus.seats; i++) { %>
+            <% if(i <= bus.availableSeats) { %>
+              <option value="<%= i %>">Ghế số <%= i %></option>
+            <% } %>
+          <% } %>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="phone">Số điện thoại:</label>
+        <input type="tel" id="phone" name="phone" required>
+      </div>
+      <button type="submit">Xác nhận đặt vé</button>
+    </form>
+  </div>
+</body>
+</html>

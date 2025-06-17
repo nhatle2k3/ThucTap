@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quản lý chuyến xe</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Quản lý chuyến xe</h1>
+    
+    <div class="add-bus-form">
+      <h2>Thêm chuyến xe mới</h2>
+      <form action="/admin/buses" method="POST">
+        <div class="form-group">
+          <label for="company">Nhà xe:</label>
+          <input type="text" id="company" name="company" required>
+        </div>
+        <div class="form-group">
+          <label for="from">Điểm đi:</label>
+          <input type="text" id="from" name="route[from]" required>
+        </div>
+        <div class="form-group">
+          <label for="to">Điểm đến:</label>
+          <input type="text" id="to" name="route[to]" required>
+        </div>
+        <div class="form-group">
+          <label for="departureTime">Thời gian khởi hành:</label>
+          <input type="datetime-local" id="departureTime" name="departureTime" required>
+        </div>
+        <div class="form-group">
+          <label for="price">Giá vé:</label>
+          <input type="number" id="price" name="price" required>
+        </div>
+        <div class="form-group">
+          <label for="seats">Tổng số ghế:</label>
+          <input type="number" id="seats" name="seats" required>
+        </div>
+        <button type="submit">Thêm chuyến xe</button>
+      </form>
+    </div>
+
+    <div class="buses-list">
+      <h2>Danh sách chuyến xe</h2>
+      <% if (buses.length === 0) { %>
+        <p>Chưa có chuyến xe nào.</p>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr>
+              <th>Nhà xe</th>
+              <th>Tuyến</th>
+              <th>Thời gian</th>
+              <th>Giá vé</th>
+              <th>Ghế trống</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% buses.forEach(bus => { %>
+              <tr>
+                <td><%= bus.company %></td>
+                <td><%= bus.route.from %> - <%= bus.route.to %></td>
+                <td><%= new Date(bus.departureTime).toLocaleString() %></td>
+                <td><%= bus.price.toLocaleString() %> VNĐ</td>
+                <td><%= bus.availableSeats %>/<%= bus.seats %></td>
+                <td>
+                  <a href="/admin/buses/<%= bus._id %>/edit">Sửa</a>
+                  <a href="/admin/buses/<%= bus._id %>/delete" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+
+    <a href="/" class="back-link">← Quay lại trang chủ</a>
+  </div>
+</body>
+</html> 

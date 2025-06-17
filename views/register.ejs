@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Đăng ký - Hệ thống đặt vé xe</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .register-container {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .register-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .register-header h1 {
+      color: #2c3e50;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .register-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .register-form input {
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .register-form input:focus {
+      border-color: #3498db;
+      outline: none;
+    }
+
+    .register-form button {
+      background: #3498db;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+      margin-top: 10px;
+    }
+
+    .register-form button:hover {
+      background: #2980b9;
+    }
+
+    .register-footer {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+    }
+
+    .register-footer a {
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    .register-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <div class="register-header">
+      <h1>Đăng ký tài khoản</h1>
+      <p>Vui lòng điền thông tin để tạo tài khoản mới</p>
+    </div>
+
+    <% if (typeof error !== 'undefined') { %>
+      <div class="error-message">
+        <%= error %>
+      </div>
+    <% } %>
+
+    <form class="register-form" action="/register" method="POST">
+      <input 
+        type="text" 
+        name="username" 
+        placeholder="Tên đăng nhập"
+        required
+        autocomplete="username"
+      >
+      <input 
+        type="password" 
+        name="password" 
+        placeholder="Mật khẩu"
+        required
+        autocomplete="new-password"
+      >
+      <input 
+        type="text" 
+        name="fullName" 
+        placeholder="Họ và tên"
+        required
+        autocomplete="name"
+      >
+      <input 
+        type="email" 
+        name="email" 
+        placeholder="Email"
+        required
+        autocomplete="email"
+      >
+      <button type="submit">Đăng ký</button>
+    </form>
+
+    <div class="register-footer">
+      <p>Đã có tài khoản? <a href="/login">Đăng nhập ngay</a></p>
+    </div>
+  </div>
+</body>
+</html> 
